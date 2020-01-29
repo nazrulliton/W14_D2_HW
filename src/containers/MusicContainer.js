@@ -1,34 +1,35 @@
-import React  from 'react';
+import React, {Component}  from 'react';
 import MusicList from '../components/MusicList';
 
-class MusicContainer extends React.Component {
-    constructor(props){
+class MusicBox extends Component {
+
+    constructor(props) {
         super(props);
         this.state = {
-            songs: [],
-            selectedImId: ''
+            songs: []
         };
     }
-componentDidMount(){
-    const url = 'https://itunes.apple.com/gb/rss/topsongs/limit=20/json';
-    fetch(url)
-    .then(res => res.json())
-    .then(songs => this.setState({songs: songs.feed.entry}))
-    .catch(err => console.error);
+
+    componentDidMount() {
+        const url = "https://itunes.apple.com/gb/rss/topsongs/limit=20/json"
+
+        fetch(url)
+            .then(res => res.json())
+            .then(songs => this.setState({ songs: songs.feed.entry }))
+            .catch(err => console.err());
+    }
+
+    render() {
+        return (
+            <div>
+                <h2>Itunes Top 20</h2>
+                <MusicList songs={this.state.songs}/>
+            </div>
+        )
+    }
+
+
 }
 
-render(){
-    const selectedSong = this.state.songs.find(song => song.id.attributes['im:id'] === this.state.selectedImId)
 
-    return (
-        <div> 
-            <h2>Music Container</h2>
-           <MusicList/>
-            {/*  <Song/> */}
-        </div>
-    );
-}
-
-}
-
-export default MusicContainer;
+export default MusicBox;
